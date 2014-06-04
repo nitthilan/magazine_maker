@@ -1,0 +1,31 @@
+email feature: https://github.com/eleith/emailjs
+Authentication library: passport: http://passportjs.org/guide/openid/
+Socket IO: for interacting with backend
+	- desgining a chat application with friends using socketio [chat room possible in socketio]
+Using node-hat for generating a random id for every session instead of using username.
+
+
+Bugs:
+	- Login page does not automatically redirect if user session has not expired
+
+Debugging mobile: https://developers.google.com/chrome-developer-tools/docs/remote-debugging
+Phonegap: http://docs.phonegap.com/en/edge/guide_platforms_index.md.html
+
+
+Important steps for optimisation:
+	- Set the maxAge to high value. Currently set to 0
+	- Client side the google compiler is not used. Use it to obtain better compression
+	- phone chrome://flags => set: Override software rendering list
+
+
+Server Settings: 512 MB memory
+
+Network mode for accessing through putty:
+	- Network Adapters => Bridged Adapter => Select one of the ethernet connections on the host
+
+Installing ngix:
+	- http://joedoyle.us/getting-started-with-nodejs-and-nginx
+	- http://blog.argteam.com/coding/hardening-node-js-for-production-part-2-using-nginx-to-avoid-node-js-load/
+		- upstart, winston, forever
+
+Some shutdown commands: shutdown now -P

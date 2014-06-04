@@ -1,0 +1,93 @@
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">{{magazine_title}} Preview</a>
+    </div>
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <div class="input-group">
+        <span class="input-group-btn">
+          <button class="btn btn-primary" ng-click=fetchArticle(articleUrl) type="button">fetch</button>
+        </span>
+        <input type="text" class="form-control" ng-model="articleUrl" placeholder={{addArticlePlaceholder}}>
+      </div><!-- /input-group -->
+      <div ng-show="shouldShowPreview">
+        <div class="media">
+          <a class="pull-left" href={{articleToBeAdded.url}} target="_blank">
+            <img class="media-object img-thumbnail" ng-src="{{articleToBeAdded.selectedImgPath}}" alt="image not loaded" width=200px height=200px>
+          </a>
+          <div class="media-body">
+            <a href={{articleToBeAdded.url}} target="_blank"><h4 class="panel-title">{{articleToBeAdded.title}}</h4></a>
+            <button type="button" class="close" aria-hidden="true" ng-click="articleToBeAdded=null;shouldShowPreview=false">&times;</button>
+            <span class="badge">{{articleToBeAdded.author}}</span>
+            <span class="badge" am-time-ago="articleToBeAdded.date[0]"></span>
+            <!--span class="badge">{{articleToBeAdded.date[0]|date:'medium'}}</span-->
+            <p>{{articleToBeAdded.gist}}</p>
+            <p ng-show="articleToBeAdded.curatorNote">Note: {{articleToBeAdded.curatorNote}}</p>
+            <span ng-repeat="category in articleToBeAdded.curatorTags" class="label label-default">{{category}} </span>
+            <span ng-repeat="category in articleToBeAdded.selectedCustomTags.split(',')" class="label label-default">{{category}} </span>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary" ng-click="addArticle(articleToBeAdded)">Add</button>
+        <p>Title: <a href="#" editable-text="articleToBeAdded.title">{{ articleToBeAdded.title || 'No title' }}</a></p>
+        <p>Link: {{articleToBeAdded.url}}</p>
+        <p>Author: <a href="#" editable-text="articleToBeAdded.author">{{ articleToBeAdded.author || 'No title' }}</a></p>
+        <p>Date:
+        <a href="#" editable-bsdate="articleToBeAdded.date[0]" e-datepicker-popup="dd-MMMM-yyyy">
+          {{ (articleToBeAdded.date[0] | date:"dd/MM/yyyy") || 'empty' }}
+        </a></p>
+        <p>Image List:
+          <a href="#" editable-radiolist="articleToBeAdded.selectedImgPath" e-ng-options="s for s in articleToBeAdded.imgPath track by $index">
+            {{articleToBeAdded.selectedImgPath || 'Image not available'}}
+          </a>
+          <a href="#" editable-text="articleToBeAdded.selectedImgPath">{{ articleToBeAdded.selectedImgPath || 'alternate image path' }}</a>
+        </p>
+        <p>Tag:
+        <a href="#" editable-radiolist="articleToBeAdded.selectedCustomTags" e-ng-options="s for s in articleToBeAdded.tag track by $index">
+          {{ articleToBeAdded.selectedCustomTags || 'Tags not available' }}
+        </a>
+        </p>
+        <p>Curator Tags:
+        <select ui-select2="{ allowClear: true}" ng-model="articleToBeAdded.curatorTags" data-placeholder="Choose category" style="width:400px" multiple>
+          <option ng-repeat="category in categories | orderBy:'_id':true" value="{{category._id}}">{{category._id}}</option>
+        </select>
+        </p>
+        <p>Gist:</p>
+        <a href="#" editable-textarea="articleToBeAdded.gist" e-rows="7" e-cols="40">
+          <pre>{{ articleToBeAdded.gist || 'no gist available' }}</pre>
+        </a>
+        <p>Curator Note:</p>
+        <a href="#" editable-textarea="articleToBeAdded.curatorNote" e-rows="7" e-cols="40">
+          <pre>{{ articleToBeAdded.curatorNote || 'add a curator note' }}</pre>
+        </a>
+        <p>Description:</p>
+        <pre>{{ articleToBeAdded.description.slice(0,500) || 'no description available' }}...</pre>
+      </div>
+    </div>
+    <div class="col-md-10 col-md-offset-1">
+      <div ng-repeat="article in articles" class="media">
+        <a class="pull-left" href={{article.link}} target="_blank">
+          <img class="media-object img-thumbnail" ng-src="{{article.imageUrl}}" alt="image not loaded" width=200px height=200px>
+        </a>
+        <div class="media-body">
+          <a href={{article.link}} target="_blank"><h4 class="panel-title">{{article.title}}</h4></a>
+          <button type="button" class="close" aria-hidden="true" ng-click="deleteArticle(article)">&times;</button>
+          <span class="badge">{{article.author}}</span><span class="badge" am-time-ago="article.pubDate"></span>
+          <p>{{article.gist}}</p>
+          <p ng-show="article.curatorNote">Note: {{article.curatorNote}}</p>
+          <span ng-repeat="category in article.categories" class="label label-default">{{category}} </span>
+        </div>
+      </div>
+    </div> 
+  </div>
+</div>

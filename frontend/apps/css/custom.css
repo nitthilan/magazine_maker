@@ -1,0 +1,12 @@
+/*!
+The below is required for angular-ui bootstrap to work properly
+*/
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+.ace_editor { height: 200px; }
+.image_max_height_100px{ max-width:100px;}
+.editable-radiolist label {
+  display: block;
+}
+body { padding-top: 70px; }
+

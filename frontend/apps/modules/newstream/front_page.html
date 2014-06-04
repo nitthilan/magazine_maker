@@ -1,0 +1,51 @@
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">{{magazine_title}}</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <li ng-repeat="n in [5] | makeRange"><a href="#">{{categories[n]._id}}</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">more... <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li ng-repeat="n in [5,categories.length] | makeRange"><a href="#">{{categories[n]._id}}</a></li>
+          </ul>
+        </li>
+        <li type="button" class="btn btn-primary"><a class="navbar-link" href="https://www.facebook.com/pages/Sandhana/645007232252739" target="_blank">fb</a></li>
+        <li type="button" class="btn btn-info"><a class="navbar-link" href="https://www.facebook.com/pages/Sandhana/645007232252739" target="_blank">twt</a></li>
+      </ul>
+
+
+
+    </div><!-- /.navbar-collapse -->
+
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="row">
+  <div ng-repeat="article in articles" class="col-sm-6 col-md-4">
+    <div class="thumbnail">
+      <div ng-show="article.imageUrl">
+        <a href={{article.link}} target="_blank">
+          <img class="media-object image_max_height_100px" ng-src="{{article.imageUrl}}" alt="image not loaded" max-width=100px>
+        </a>
+      </div>
+      <!-- img src="" data-src="holder.js/300x200" alt="..." -->
+      <div class="caption">
+        <a href={{article.link}} target="_blank"><h4 class="panel-title">{{article.title}}</h4></a><span class="badge">{{article.author}}</span>
+        <p>{{article.gist}}</p>
+        <p>{{article.categories[0]}} {{article.categories[1]}}</p>
+        <div class="fb-share-button" data-href={{article.link}} data-type="button_count"></div>
+      </div>
+    </div>
+  </div>
+</div>

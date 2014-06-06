@@ -10,6 +10,11 @@ window.routes =
     templateUrl: 'modules/newstream/article_preview.html', 
     controller: 'articlePreviewCtrl', 
     requireLogin: false
+  },
+  "/setting": {
+    templateUrl: 'modules/newstream/magazine_setting.html', 
+    controller: 'magazineSettingCtrl', 
+    requireLogin: false
   }
 };
 // Declare app level module which depends on filters, and services

@@ -1,0 +1,34 @@
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">{{magazine_title}} Preview</a>
+    </div>
+  </div><!-- /.container-fluid -->
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      
+      <p>Title: <a href="#" editable-text="magazine_settings.title">{{ magazine_settings.title || 'No title' }}</a></p>
+
+      <p>Categories:
+      <input type="hidden" ui-select2="select2Options" ng-model="magazine_settings.categories" data-placeholder="Add new category" style="width:400px">
+      </p>
+
+      <p>Top Categories [max 5]:
+        <select ui-select2="{ allowClear: true, maximumSelectionSize: 5 }" ng-model="magazine_settings.topCategories" data-placeholder="Choose category" style="width:400px" multiple>
+          <option ng-repeat="category in magazine_settings.categories" value="{{category}}">{{category}}</option>
+        </select>
+      </p>
+
+    </div>
+  </div>
+</div><!-- /.container-fluid -->

@@ -75,7 +75,7 @@
       </div>
     </div>
     <div class="col-md-10 col-md-offset-1">
-      <div ng-repeat="article in articles" class="media">
+      <div ng-repeat="article in articles | orderBy:'pubDate':true" class="media">
         <a class="pull-left" href={{article.link}} target="_blank">
           <img class="media-object img-thumbnail" ng-src="{{article.imageUrl}}" alt="image not loaded" width=200px height=200px>
         </a>

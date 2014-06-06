@@ -31,21 +31,40 @@
 
   </div><!-- /.container-fluid -->
 </nav>
-<div class="row">
-  <div ng-repeat="article in articles" class="col-sm-6 col-md-4">
+
+<div class="row" ng-repeat="columnArticles in articles | orderBy:'pubDate':true | partition:3">
+  <div ng-repeat="article in columnArticles" class="col-md-4">
+    <div class="media">
+      <a class="pull-left" href={{article.link}} target="_blank">
+        <img class="media-object img-thumbnail" ng-src="{{article.imageUrl}}" alt="image not loaded" width=200px height=200px>
+      </a>
+      <div class="media-body">
+        <a href={{article.link}} target="_blank"><h4 class="panel-title">{{article.title}}</h4></a>
+        <span class="badge">{{article.author}}</span>
+        <span class="badge" am-time-ago="article.pubDate"></span>
+        <p>{{article.gist}}</p>
+        <p ng-show="article.curatorNote">Note: {{article.curatorNote}}</p>
+        <span ng-repeat="category in article.categories" class="label label-default">{{category}} </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- div class="row" ng-repeat="columnArticles in articles | partition:3">
+  <div ng-repeat="article in columnArticles" class="col-md-4">
     <div class="thumbnail">
       <div ng-show="article.imageUrl">
         <a href={{article.link}} target="_blank">
           <img class="media-object image_max_height_100px" ng-src="{{article.imageUrl}}" alt="image not loaded" max-width=100px>
         </a>
       </div>
-      <!-- img src="" data-src="holder.js/300x200" alt="..." -->
       <div class="caption">
         <a href={{article.link}} target="_blank"><h4 class="panel-title">{{article.title}}</h4></a><span class="badge">{{article.author}}</span>
         <p>{{article.gist}}</p>
+        <p>Note: {{article.curatorNote}}</p>
         <p>{{article.categories[0]}} {{article.categories[1]}}</p>
         <div class="fb-share-button" data-href={{article.link}} data-type="button_count"></div>
       </div>
     </div>
   </div>
-</div>
+</div -->

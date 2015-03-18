@@ -1,37 +1,42 @@
-MyAppControllers.controller('magazineSettingCtrl', ['$scope','$http','$timeout',
-	function($scope, $http, $timeout) {
-		$scope.magazine_settings = {
-			title:"Sandhana",
-			categories: [],
-			topCategories:[], // Max selection of n
-			curatorName: "",
-			// display themes
-			// srticle sizes
-		};
-		$scope.magazine_title = $scope.magazine_settings.title;
-		$scope.globalCategories= [];
+MyAppControllers.controller('magazineSettingCtrl', ['$scope','$http','$timeout','$stateParams',
+	function($scope, $http, $timeout, $stateParams) {
 
-		//http://stackoverflow.com/questions/18244027/angular-ui-select2-dynamically-change-tags-attribute-in-options
-		$scope.select2Options = {
-			'multiple': true,
-			maximumInputLength: 10,
-			'simple_tags': true,
-			'tags': function () {
-				return $scope.globalCategories;
-			}
+		$scope.magazineid = $stateParams.magazineid;
+	
+		var getCategories = function(){
+			return $scope.allCategories;
 		};
-		$http.get('curator/categories').success(function(categories) {
-			for(var i=0;i<categories.length;i++){
-				$scope.globalCategories.push(categories[i]._id);
+		$scope.categoriesSelect2Options = {
+			'multiple': true,
+			'simple_tags': true,
+			'tags': getCategories
+		};
+		$http.get('/curator/categories').success(function(data) {
+			$scope.allCategories = [];
+			for (index = 0; index < data.length; ++index) {
+				$scope.allCategories.push(data[index]._id);
 			}
 		});
-		$scope.addCategory = function(newCategory){
-			$scope.magazine_settings.categories.push(newCategory);
+
+		$http.get('curator/magazineSetting/'+$stateParams.magazineid).success(function(magazineSettings){
+			$scope.newMagazine = magazineSettings;
+		});
+
+		$scope.updateMagazine = function(newMagazine){
+			$http.put('/curator/magazineSetting/'+$stateParams.magazineid, {info:newMagazine}).success(function(data){
+				addAlert("Magazine update successful");
+			}).error(function(err){
+				console.log("Error in saving article "+JSON.stringify(err));
+				addAlert("Update failed. Make sure title is unique", null, null);
+			});
 		};
-		$scope.deleteCategory = function(newCategory){
-			var index = $scope.magazine_settings.categories.indexOf(newCategory);
-			if(index != -1){
-				$scope.magazine_settings.categories.splice(index,1);
-			}
+
+
+		$scope.alerts = [];
+		var addAlert = function(alert_message, alert_link, alert_link_msg) {
+			$scope.alerts.push({msg: alert_message, link: alert_link, link_msg:alert_link_msg});
+			$timeout(function(){
+				$scope.alerts.splice(0,1);
+			}, 5000);
 		};
 }]);

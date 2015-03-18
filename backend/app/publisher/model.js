@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
 var categorySchema = new Schema({
 	_id:{type: String, required:true, trim:true, index:true, unique:true, lowercase:true}
 });
+
 var articleSchema = new Schema({
 	title: {type: String, required:true, trim:true},
 	gist: String,
@@ -19,5 +20,18 @@ var articleSchema = new Schema({
 	}
 });
 
-module.exports = mongoose.model('PubArticle',articleSchema);
-module.exports = mongoose.model('PubCategories',categorySchema);
+var magazineSettingSchema = new Schema({
+	title:{type: String, required:true, trim:true, unique:true},
+	about:{type: String, required:true, trim:true},
+	categories:[{type:String, trim:true, lowercase:true}],
+	topCategories:[{type:String, trim:true, lowercase:true}],
+	curatorName:{type: String, trim:true},
+	maxArticlesPerPage:{type: Number, default: 100},
+	creatorId: {type:ObjectId, required:true}
+});
+
+exports.articleSchema = articleSchema;
+
+mongoose.model('PubArticle',articleSchema);
+mongoose.model('MagazineSetting',magazineSettingSchema);
+mongoose.model('Categories',categorySchema);

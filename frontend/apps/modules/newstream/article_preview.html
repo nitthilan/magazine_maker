@@ -8,10 +8,11 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">{{magazine_title}} Preview</a>
+      <a class="navbar-brand" href="#/{{magazineid}}">Preview</a>
     </div>
   </div><!-- /.container-fluid -->
 </nav>
+
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-10 col-md-offset-1">
@@ -42,6 +43,24 @@
         <p>Title: <a href="#" editable-text="articleToBeAdded.title">{{ articleToBeAdded.title || 'No title' }}</a></p>
         <p>Link: {{articleToBeAdded.url}}</p>
         <p>Author: <a href="#" editable-text="articleToBeAdded.author">{{ articleToBeAdded.author || 'No title' }}</a></p>
+        <div class="checkbox">
+          <label> 
+            <input type="checkbox" ng-model="articleToBeAdded.isFrontPageArticle"> Display in Front Page            
+          </label>
+        </div>
+        <div class="radio-inline">
+          Read Time:
+          <label class="radio-inline"><input type="radio" ng-model="articleToBeAdded.readTimeTag" value="1min" checked> 1 min </label>
+          <label class="radio-inline"><input type="radio" ng-model="articleToBeAdded.readTimeTag" value="5-10min">5-10 mins</label>
+          <label class="radio-inline"><input type="radio" ng-model="articleToBeAdded.readTimeTag" value=">20min"> >20 mins</label>
+        </div>
+        <div class="radio-inline">
+          Article Type:
+          <label class="radio-inline"><input type="radio" ng-model="articleToBeAdded.articleTypeTag" value="article" checked> Article </label>
+          <label class="radio-inline"><input type="radio" ng-model="articleToBeAdded.articleTypeTag" value="pictory"> Picture Story </label>
+          <label class="radio-inline"><input type="radio" ng-model="articleToBeAdded.articleTypeTag" value="video"> Video </label>
+        </div>
+
         <p>Date:
         <a href="#" editable-bsdate="articleToBeAdded.date[0]" e-datepicker-popup="dd-MMMM-yyyy">
           {{ (articleToBeAdded.date[0] | date:"dd/MM/yyyy") || 'empty' }}
@@ -59,7 +78,7 @@
         </p>
         <p>Curator Tags:
         <select ui-select2="{ allowClear: true}" ng-model="articleToBeAdded.curatorTags" data-placeholder="Choose category" style="width:400px" multiple>
-          <option ng-repeat="category in categories | orderBy:'_id':true" value="{{category._id}}">{{category._id}}</option>
+          <option ng-repeat="category in magazineSettings.categories | orderBy:'toString()'" value="{{category}}">{{category}}</option>
         </select>
         </p>
         <p>Gist:</p>
@@ -74,6 +93,13 @@
         <pre>{{ articleToBeAdded.description.slice(0,500) || 'no description available' }}...</pre>
       </div>
     </div>
+  </div>
+</div>
+
+
+
+<div class="container-fluid">
+  <div class="row">
     <div class="col-md-10 col-md-offset-1">
       <div ng-repeat="article in articles | orderBy:'pubDate':true" class="media">
         <a class="pull-left" href={{article.link}} target="_blank">

@@ -1,9 +1,14 @@
-MyAppControllers.controller('articlePreviewCtrl', ['$scope','$http','$timeout',
-	function($scope, $http, $timeout) {
+MyAppControllers.controller('articlePreviewCtrl', ['$scope','$http','$timeout', '$stateParams',
+	function($scope, $http, $timeout, $stateParams) {
+		$scope.magazineid = $stateParams.magazineid;
+		$scope.magazineSettings = null;
+		$http.get('curator/magazineSetting/'+$stateParams.magazineid).success(function(magazineSettings){
+			$scope.magazineSettings = magazineSettings;
+		});
 		$scope.select2Options = {
 			allowClear:true
 		};
-		$scope.magazine_title = "Sandhana";
+
 		$scope.articleUrl = null;
 		$scope.addArticlePlaceholder = "Article url";
 		$scope.articleToBeAdded = null;
@@ -21,6 +26,9 @@ MyAppControllers.controller('articlePreviewCtrl', ['$scope','$http','$timeout',
 				$scope.articleToBeAdded.selectedCustomTags = $scope.articleToBeAdded.tag[0];//.str.split(",");
 				$scope.articleToBeAdded.curatorTags = [];
 				$scope.articleToBeAdded.curatorNote = null;
+				$scope.articleToBeAdded.readTimeTag = "5-10min";
+				$scope.articleToBeAdded.articleTypeTag = "article";
+				$scope.articleToBeAdded.isFrontPageArticle = true;
 				//console.log($scope.articleToBeAdded.tag);
 				$timeout(function(){
 					$scope.addArticlePlaceholder = "Article url";
@@ -33,6 +41,7 @@ MyAppControllers.controller('articlePreviewCtrl', ['$scope','$http','$timeout',
 				}, 5000);			
 			});			
 		};
+
 		$scope.articles = [];
 		$scope.addArticle = function(articleToBeAdded){
 			var articleModel = {};
@@ -45,8 +54,11 @@ MyAppControllers.controller('articlePreviewCtrl', ['$scope','$http','$timeout',
 			articleModel.author = articleToBeAdded.author;
 			articleModel.categories = articleToBeAdded.curatorTags;
 			if(articleToBeAdded.selectedCustomTags) articleModel.categories.concat(articleToBeAdded.selectedCustomTags.split(','));
-			$http.post('/curator/pubarticles', {info:articleModel}).success(function(data){
-				$http.get('/curator/pubarticles').success(function(data) { $scope.articles = data;	});
+			if(articleToBeAdded.readTimeTag) articleModel.categories.push(articleToBeAdded.readTimeTag);
+			if(articleToBeAdded.articleTypeTag) articleModel.categories.push(articleToBeAdded.articleTypeTag);
+			if(articleToBeAdded.isFrontPageArticle) articleModel.categories.push("front_page");
+			$http.post('/curator/magazineSetting/'+$stateParams.magazineid+'/pubarticle', {info:articleModel}).success(function(data){
+				$http.get('/curator/magazineSetting/'+$stateParams.magazineid+'/pubarticle').success(function(data) { $scope.articles = data;	});
 				$scope.articleToBeAdded = null;
 				$scope.shouldShowPreview = false;
 			}).error(function(err){
@@ -54,15 +66,12 @@ MyAppControllers.controller('articlePreviewCtrl', ['$scope','$http','$timeout',
 			});
 		};
 		$scope.deleteArticle = function(article){
-			$http.delete('/curator/pubarticles/'+article._id).success(function(data){
-				$http.get('/curator/pubarticles').success(function(data) { $scope.articles = data;	});
+			$http.delete('/curator/magazineSetting/'+$stateParams.magazineid+'/pubarticle'+article._id).success(function(data){
+				$http.get('/curator/magazineSetting/'+$stateParams.magazineid+'/pubarticle').success(function(data) { $scope.articles = data;	});
 			}).error(function(err){
 				console.log("Error in saving article "+err);
 			});	
 		};
-		$scope.categories = [];
-		$http.get('curator/categories').success(function(articles) {
-			$scope.categories = articles;
-		});
-		$http.get('/curator/pubarticles').success(function(data) { $scope.articles = data;	});
+
+		$http.get('/curator/magazineSetting/'+$stateParams.magazineid+'/pubarticle').success(function(data) { $scope.articles = data;	});
 }]);

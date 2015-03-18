@@ -1,0 +1,112 @@
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Sandhana Magazine Maker</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+        <button ng-show="isUserLoggedIn" type="submit" class="btn btn-default" ng-click="showCreateFormFn()">Create</button>
+        <button ng-show="isUserLoggedIn" type="submit" class="btn btn-default" ng-click="logout()">Logout</button>
+        <button ng-show="!isUserLoggedIn" type="submit" class="btn btn-default" ng-click="showLoginFormFn()">Login</button>
+      </form>
+      <p ng-show="isUserLoggedIn" class="navbar-text navbar-right">Hi {{loggedInUser.email}}</p>      
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<div ng-show="showCreateForm && isUserLoggedIn"class="container-fluid">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <form role="form">
+        <div class="form-group">
+          <label for="inputTitle">Title</label>
+           <input type="text" class="form-control" id="inputTitle" ng-model="newMagazine.title" placeholder="Magazine title">
+        </div>
+        <div class="form-group">
+          <label for="inputAbout">About</label>
+          <input type="text" class="form-control" id="inputAbout" ng-model="newMagazine.about" placeholder="Tag line about the magazine">
+        </div>
+        <div class="form-group">
+          <label for="inputCurator">Curator</label>
+          <input type="text" class="form-control" id="inputCurator" ng-model="newMagazine.curatorName" placeholder="Name of the curator">
+        </div>
+        <div class="form-group">
+          <label for="inputMaxarticleperpage">Max Articles Per Page</label>
+          <input type="number" class="form-control" id="inputMaxarticleperpage" ng-model="newMagazine.maxArticlesPerPage" placeholder="Maximum number of articles in a page">
+        </div>
+        <div class="form-group">
+          <label for="inputCategories">Categories</label>
+          <input type="hidden" ui-select2="categoriesSelect2Options" ng-model="newMagazine.categories" data-placeholder="Add categories for articles" style="width:100%" id="inputCategories">
+        </div>
+        <div class="form-group">
+          <label for="inputTopCategories">Top Categories</label>
+          <select ui-select2="{ allowClear: true, maximumSelectionSize: 5, width:copy}" ng-model="newMagazine.topCategories" data-placeholder="Choose top categories from above. Max 5" style="width:100%" id="inputTopCategories" multiple>
+            <option ng-repeat="category in newMagazine.categories" value="{{category}}">{{category}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary" ng-click="createMagazine(newMagazine)">Create</button>
+          <button type="submit" class="btn btn-primary" ng-click="discardCreateFormFn()">Discard</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div><!-- /.container-fluid -->
+<div ng-show="showLoginForm&& !isUserLoggedIn"class="container-fluid">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <form role="form">
+        <div class="form-group">
+          <label for="inputEmail">Email</label>
+           <input type="text" class="form-control" id="inputEmail" ng-model="newUser.email" placeholder="email@address.com">
+        </div>
+        <div class="form-group">
+          <label for="inputPassword">Password</label>
+          <input type="password" class="form-control" id="inputPassword" ng-model="newUser.password" placeholder="password">
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary" ng-click="createUser(newUser)">Create</button>
+          <button type="submit" class="btn btn-primary" ng-click="login(newUser)">Login</button>
+          <button type="submit" class="btn btn-primary" ng-click="discardLoginFormFn()">Discard</button>
+        </div>
+      </form>
+    </div>
+  </div>        
+</div><!-- /.container-fluid -->
+
+<div ng-repeat="alert in alerts" class="alert alert-info">{{alert.msg}}<a href="{{alert.link}}" class="alert-link">{{alert.link_msg}}</a></div>
+
+
+<div class="row" ng-repeat="columnMagazines in magazineList | orderBy:'pubDate':true | partition:3">
+  <div ng-repeat="magazine in columnMagazines" class="col-md-4">
+    <h3>{{magazine.title}}</h3>
+    <p>{{magazine.about}}</p>
+    <p>{{magazine.curatorName}}</p>
+    <div ng-repeat="n in [5] | makeRange" class="media">
+      <a class="pull-left" href={{magazine.articles[n].link}} target="_blank">
+        <img class="media-object img-thumbnail" ng-src="{{magazine.articles[n].imageUrl}}" alt="image not loaded" width=100px height=100px>
+      </a>
+      <div class="media-body">
+        <a href={{magazine.articles[n].link}} target="_blank"><h4 class="panel-title">{{magazine.articles[n].title}}</h4></a>
+        <span class="badge">{{magazine.articles[n].author}}</span>
+        <span class="badge" am-time-ago="magazine.articles[n].pubDate"></span>
+        <p>{{magazine.articles[n].gist}}</p>
+        <p ng-show="magazine.articles[n].curatorNote">Note: {{magazine.articles[n].curatorNote}}</p>
+        <span ng-repeat="category in magazine.articles[n].categories" class="label label-default">{{category}} </span>
+      </div>
+    </div>
+  </div>
+</div>

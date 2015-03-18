@@ -27,14 +27,12 @@ module.exports = function (app, config, auth){ //, smtpTransport) {
   });
 
   require(config.root + './user_accounts/user_routes.js')(app, config, auth);
-  require(config.root + './rest_api_base/rest_api_base.js')(app, auth, config, "/curator/channels", mongoose.model('Channel'));
   require(config.root + './rest_api_base/rest_api_base.js')(app, auth, config, "/curator/categories", mongoose.model('Categories'));
-  require(config.root + './curator/rest_article_query.js')(app, auth, config, "/curator/articles");  
   require(config.root + './publisher/rest_get_article_details.js')(app, auth, config, "/curator/articles");  
-  require(config.root + './rest_api_base/rest_api_base.js')(app, auth, config, "/curator/articles", mongoose.model('Article'));
   require(config.root + './rest_api_base/rest_api_base.js')(app, auth, config, "/curator/pubarticles", mongoose.model('PubArticle'));
-  require(config.root + './curator/rest_feedcollector.js')(app, auth, config, "/curator/channels");
-  //require(config.root + './rest_api_base/rest_api_base.js')(app, auth, config, "/curator/notes", mongoose.model('Notes'));
+  require(config.root + './rest_api_base/rest_api_base.js')(app, auth, config, "/curator/magazineSetting", mongoose.model('MagazineSetting'));
+  require(config.root + './publisher/rest_all_pubarticles.js')(app, auth, config, "/curator/magazineSetting");
+  require(config.root + './rest_api_base/rest_api_base.js')(app, auth, config, "/curator/feedback", mongoose.model('feedback'));
 
   app.get(/\/?.*/, restify.serveStatic({
     directory: config.static_path,

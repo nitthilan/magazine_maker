@@ -1,12 +1,19 @@
-MyAppControllers.controller('frontPageCtrl', ['$scope','$http','$timeout',
-	function($scope, $http, $timeout) {
-		$scope.magazine_title = "Sandhana";
+MyAppControllers.controller('frontPageCtrl', ['$scope','$http','$timeout', '$stateParams',
+	function($scope, $http, $timeout, $stateParams) {
+		//console.log("stateParams "+JSON.stringify($stateParams));
+		$scope.emptyString="                                                                                                                 ";
+		$scope.magazineSettings = null;
+		$http.get('curator/magazineSetting/'+$stateParams.magazineid).success(function(magazineSettings){
+			$scope.magazineSettings = magazineSettings;
+		});
 		$scope.articles = [];
 		$scope.categories = [];
-		$http.get('/curator/pubarticles').success(function(articles) {
+		var restUrl = '/curator/magazineSetting/'+$stateParams.magazineid+'/pubarticle';
+		if($stateParams.categories){
+			restUrl = restUrl +'?categories='+$stateParams.categories;
+		}
+		$http.get(restUrl)
+		.success(function(articles) {
 			$scope.articles = articles;
-		});
-		$http.get('curator/categories').success(function(articles) {
-			$scope.categories = articles;
 		});
 }]);

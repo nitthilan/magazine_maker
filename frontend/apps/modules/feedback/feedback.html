@@ -1,0 +1,57 @@
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Feedback</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-default" ng-click="showForm()">Create</button>
+      </div>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<div ng-repeat="alert in alerts" class="alert alert-info">{{alert.msg}}</div>
+<div ng-show="showCreateForm" class="container-fluid">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <form role="form">
+        <div class="form-group">
+          <label for="oneLiner">One Liner</label>
+           <input type="text" class="form-control" id="oneLiner" ng-model="newFeedBack.oneliner" placeholder="Hit it on the head">
+        </div>
+        <div class="form-group">
+          <label for="feedback">Feedback/Bug/Feature</label>
+          <input type="text" class="form-control" id="feedback" ng-model="newFeedBack.feedback" placeholder="Pour in as much as possible">
+        </div>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" ng-model="newFeedBack.name" placeholder="Your initials">
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary" ng-click="createFeedback(newFeedBack)">Create</button>
+          <button type="submit" class="btn btn-primary" ng-click="discardForm()">Discard</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div><!-- /.container-fluid -->
+<ul class="list-group">
+  <li ng-repeat="feedback in allFeedback | orderBy:'numVotes':true" class="list-group-item">
+    <h4 class="list-group-item-heading">{{feedback.oneliner}} <span class="badge">{{feedback.numVotes}}</span> 
+      <button type="button" class="btn btn-default btn-xs" ng-click="vote(feedback, true)">
+        <span class="glyphicon glyphicon-chevron-up" ></span>
+      </button>
+      <button type="button" class="btn btn-default btn-xs" ng-click="vote(feedback, false)">
+        <span class="glyphicon glyphicon-chevron-down"></span>
+      </button>
+    </h4>
+    <p class="list-group-item-text">{{feedback.feedback}}</p>
+  </li>
+</ul>
+

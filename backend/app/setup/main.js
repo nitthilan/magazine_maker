@@ -29,8 +29,9 @@ db.once('open', function callback () {
 
 log.info("Loading all models");
 require(config.root+'./user_accounts/user_model.js');
-require(config.root+'./curator/model.js');
+//require(config.root+'./curator/model.js');
 require(config.root+'./publisher/model.js');
+require(config.root+'./feedback/model.js');
 
 
 // Configure the server

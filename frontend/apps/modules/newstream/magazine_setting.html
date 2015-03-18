@@ -8,27 +8,47 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">{{magazine_title}} Preview</a>
+      <a class="navbar-brand" href="#/{{magazineid}}">Settings</a>
     </div>
   </div><!-- /.container-fluid -->
 </nav>
 
+<div ng-repeat="alert in alerts" class="alert alert-info">{{alert.msg}}<a href="{{alert.link}}" class="alert-link">{{alert.link_msg}}</a></div>
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-10 col-md-offset-1">
-      
-      <p>Title: <a href="#" editable-text="magazine_settings.title">{{ magazine_settings.title || 'No title' }}</a></p>
-
-      <p>Categories:
-      <input type="hidden" ui-select2="select2Options" ng-model="magazine_settings.categories" data-placeholder="Add new category" style="width:400px">
-      </p>
-
-      <p>Top Categories [max 5]:
-        <select ui-select2="{ allowClear: true, maximumSelectionSize: 5 }" ng-model="magazine_settings.topCategories" data-placeholder="Choose category" style="width:400px" multiple>
-          <option ng-repeat="category in magazine_settings.categories" value="{{category}}">{{category}}</option>
-        </select>
-      </p>
-
+      <form role="form">
+        <div class="form-group">
+          <label for="inputTitle">Title</label>
+           <input type="text" class="form-control" id="inputTitle" ng-model="newMagazine.title" placeholder="Magazine title">
+        </div>
+        <div class="form-group">
+          <label for="inputAbout">About</label>
+          <input type="text" class="form-control" id="inputAbout" ng-model="newMagazine.about" placeholder="Tag line about the magazine">
+        </div>
+        <div class="form-group">
+          <label for="inputCurator">Curator</label>
+          <input type="text" class="form-control" id="inputCurator" ng-model="newMagazine.curatorName" placeholder="Name of the curator">
+        </div>
+        <div class="form-group">
+          <label for="inputMaxarticleperpage">Max Articles Per Page</label>
+          <input type="number" class="form-control" id="inputMaxarticleperpage" ng-model="newMagazine.maxArticlesPerPage" placeholder="Maximum number of articles in a page">
+        </div>
+        <div class="form-group">
+          <label for="inputCategories">Categories</label>
+          <input type="hidden" ui-select2="categoriesSelect2Options" ng-model="newMagazine.categories" data-placeholder="Add categories for articles" style="width:100%" id="inputCategories">
+        </div>
+        <div class="form-group">
+          <label for="inputTopCategories">Top Categories</label>
+          <select ui-select2="{ allowClear: true, maximumSelectionSize: 5, width:copy}" ng-model="newMagazine.topCategories" data-placeholder="Choose top categories from above. Max 5" style="width:100%" id="inputTopCategories" multiple>
+            <option ng-repeat="category in newMagazine.categories" value="{{category}}">{{category}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary" ng-click="updateMagazine(newMagazine)">Update</button>
+        </div>
+      </form>
     </div>
   </div>
 </div><!-- /.container-fluid -->
+

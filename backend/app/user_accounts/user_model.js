@@ -7,14 +7,7 @@ var mongoose = require('mongoose'),
 var UserSchema = new Schema({
   id: ObjectId,
   email: { type: String, trim: true },
-  hashed_password: { type: String, trim: true },
-  friend_id_list: [ObjectId],
-  message_list:[{
-    from_id:ObjectId,
-    date: Date,
-    from_app: { type: String, trim: true },
-    data: Schema.Types.Mixed
-  }]
+  hashed_password: { type: String, trim: true }
 })
 
 

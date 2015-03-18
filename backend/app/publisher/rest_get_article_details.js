@@ -1,6 +1,3 @@
-var mongoose = require('mongoose');
-var Channel = mongoose.model('Channel');
-var Article = mongoose.model('Article');
 module.exports = function(app, auth, config, baseUrl){
 	var log = require(config.root+'./setup/log.js').restLogger;
 	var rest_validation = require(config.root+'./rest_api_base/rest_validation.js');

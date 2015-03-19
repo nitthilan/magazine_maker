@@ -5,7 +5,6 @@ var mongoose = require('mongoose'),
     restify = require('restify');
 
 var UserSchema = new Schema({
-  id: ObjectId,
   email: { type: String, trim: true },
   hashed_password: { type: String, trim: true }
 })

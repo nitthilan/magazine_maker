@@ -44,14 +44,6 @@ var app = restify.createServer({
 
 // restify settings
 require(config.root + './setup/restify')(app, config, logger.restLogger);
-// Configuring socket io
-var io = socket.listen(app);
-require(config.root + './user_accounts/socket_authentication.js')(io, config);
-
-io.sockets.on('connection', function (socket) {
-    //log.info("Connection established with client");
-    require(config.root + './collaboration/active_users_routes.js')(socket, config);
-});
 
 
 // Bootstrap routes

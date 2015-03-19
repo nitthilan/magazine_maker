@@ -49,11 +49,13 @@ MyAppControllers.controller('homeCtrl', ['$scope','$http','$timeout','$filter','
 		};
 		$scope.discardCreateFormFn = function(){
 			$scope.newMagazine = null;
-			$scope.showCreateForm = false;			
+			$scope.showCreateForm = false;
 		};
-		
+
 		$scope.createMagazine = function(newMagazine){
 			newMagazine.creatorId = $scope.loggedInUser._id;
+			console.log($scope.loggedInUser);
+			console.log(newMagazine);
 			$http.post('/curator/magazineSetting', {info:newMagazine}).success(function(data){
 				//$http.get('/curator/pubarticles').success(function(data) { $scope.articles = data;	});
 				$scope.newMagazine = null;
@@ -77,9 +79,9 @@ MyAppControllers.controller('homeCtrl', ['$scope','$http','$timeout','$filter','
 		};
 		$scope.discardLoginFormFn = function(){
 			$scope.newUser = null;
-			$scope.showLoginForm = false;			
+			$scope.showLoginForm = false;
 		};
-		
+
 		$scope.createUser = function(newUser){
 			$http.post('api/user', {info:newUser}).success(function(data){
 				addAlert("User Created: "+newUser.email+" Try logiging in", null, null);
@@ -94,7 +96,7 @@ MyAppControllers.controller('homeCtrl', ['$scope','$http','$timeout','$filter','
 			$http.post('api/login', {info:newUser}).success(function(data){
 				addAlert("Login Successful "+newUser.email, null, null);
 				$scope.discardLoginFormFn();
-				$scope.loggedInUser = newUser;
+				$scope.loggedInUser = data;
 				$scope.isUserLoggedIn = true;
 			}).error(function(err){
 				console.log("Incorrect password. Try again "+JSON.stringify(err));
@@ -135,7 +137,7 @@ MyAppControllers.controller('homeCtrl', ['$scope','$http','$timeout','$filter','
 			$scope.alerts.push({msg: alert_message, link: alert_link, link_msg:alert_link_msg});
 			$timeout(function(){
 				$scope.alerts.splice(0,1);
-			}, 5000);
+			}, 10000);
 		};
 }]);
 

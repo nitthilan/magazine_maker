@@ -49,8 +49,8 @@ var io = socket.listen(app);
 require(config.root + './user_accounts/socket_authentication.js')(io, config);
 
 io.sockets.on('connection', function (socket) {
-	//log.info("Connection established with client");
-	require(config.root + './collaboration/active_users_routes.js')(socket, config);
+    //log.info("Connection established with client");
+    require(config.root + './collaboration/active_users_routes.js')(socket, config);
 });
 
 

@@ -44,7 +44,13 @@ bower install
 grunt
 cd ../backend
 sudo npm install
-node app/setup/main.js | ./node_modules/.bin/bunyan
+###node app/setup/main.js | ./node_modules/.bin/bunyan
+sudo forever stop app/setup/magazine_maker.js
+sudo rm /home/ubuntu/.forever/magazine_maker_forever.log
+sudo -E forever -l magazine_maker_forever.log -o magazine_maker_out.log -e magazine_maker_error.log start app/setup/magazine_maker.js | ./node_modules/.bin/bunyan
+
+
+
 
 ## script to run to setup node, mongo
 
